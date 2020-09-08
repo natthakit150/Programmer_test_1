@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmer test1</title>
+</head>
+<style>
+    body {
+        margin: 20px;
+        font-size: 24px;
+        line-height: 50px;
+    }
+
+    .btn {
+        color: white;
+        border: 1px;
+        background-color: orange;
+        margin: 5px;
+        height: 30px;
+        width: 80px;
+    }
+
+    #format {
+        margin: 5px;
+        font-size: 18px;
+    }
+
+    .result {
+        border: solid 1px;
+        width: 40%;
+        height: 500px;
+        margin: 5px;
+        text-align: center;
+        font-size: 16px;
+
+    }
+</style>
+
+<body>
+    <div>
+        List <input type="text" name="list" id="list"> <span id="alertList" style="color: red;"></span>
+    </div>
+    <div>
+        ค้นหา <input type="text" name="search" id="search"> <button type="button" class="btn"
+            onclick="searchNumber()">ค้นหา</button> <span id="alertsearch" style="color: red;"></span>
+    </div>
+    <div>
+        ประเภทการค้นหา
+        <select name="format" id="format">
+            <option value="Linear Search">Linear Search</option>
+            <option value="Binary Search">Binary Search</option>
+            <option value="Bubble Search">Bubble Search</option>
+        </select>
+    </div>
+    ผลลัพธ์
+    <div class="result">
+        <div id="head-found"></div>
+        <div id="search-found"></div>
+        <div id="result-found"></div>
+    </div>
+</body>
+
+<script>
+    // function search
+    function searchNumber() {
+        if (document.getElementById("list").value == "") {
+            document.getElementById("alertList").innerHTML = "*กรุณากรอกข้อมูล";
+        } else {
+            if (document.getElementById("search").value == "") {
+                document.getElementById("alertList").innerHTML = "";
+                document.getElementById("alertSearch").innerHTML = "*กรุณากรอกข้อมูลที่ต้องการค้นหา";
+            }
+            // format of search
+            else {
+                document.getElementById("alertsearch").innerHTML = "";
+
+                var str = document.getElementById("list").value;
+                var list = str.split(",");
+                var search = document.getElementById("search").value;
+
+                // Linear Search
+                if (document.getElementById("format").value == "Linear Search") {
+                    document.getElementById("head-found").innerHTML = "List : [" + list + "]";
+                    document.getElementById("search-found").innerHTML = "Search : " + search;
+                    document.getElementById("result-found").innerHTML = "";
+                    var check = 1;
+                    for (i = 0; i < list.length; i++) {
+                        var finalNumber = i + 1;
+                        if (list[i] == search) {
+                            var check = 0;
+                            var round = i + 1;
+                            var x = document.createElement("DIV");
+                            var t = document.createTextNode("Round : " + round + " ===> " + search + " = " + list[i] + " found!");
+                            x.appendChild(t);
+                            document.getElementById("result-found").appendChild(x);
+
+                            break;
+                        } else if (finalNumber == list.length && check == 1) {
+                            var round = i + 1;
+                            var x = document.createElement("DIV");
+                            var t = document.createTextNode("Round : " + round + " ===> " + search + " != " + list[i] + " not found..");
+                            x.appendChild(t);
+                            document.getElementById("result-found").appendChild(x);
+                        }
+                        else {
+                            var round = i + 1;
+                            var x = document.createElement("DIV");
+                            var t = document.createTextNode("Round : " + round + " ===> " + search + " != " + list[i]);
+                            x.appendChild(t);
+                            document.getElementById("result-found").appendChild(x);
+                        }
+                    }
+                }
+                // Binary Search
+                else if (document.getElementById("format").value == "Binary Search") {
+                    var newList = list.sort();
+                    document.getElementById("head-found").innerHTML = "List : [" + list + "] ==> " + newList + " (Sort)";
+                    document.getElementById("search-found").innerHTML = "Search : " + search;
+                    document.getElementById("result-found").innerHTML = "";
+                    var start = 0;
+                    var end = newList.length - 1;
+                    var i = 0
+                    while (start <= end) {
+                        var middle = Math.floor((start + end) / 2);
+                        if (search == newList[middle]) {
+                            var round = i + 1;
+                            var x = document.createElement("DIV");
+                            var t = document.createTextNode("Round : " + round + " ===> " + search + " = " + list[middle] + " found!");
+                            x.appendChild(t);
+                            document.getElementById("result-found").appendChild(x);
+                            break
+                        }
+                        if (search > newList[middle]) {
+                            var round = i + 1;
+                            var x = document.createElement("DIV");
+                            var t = document.createTextNode("Round : " + round + " ===> " + search + " != " + list[middle]);
+                            x.appendChild(t);
+                            document.getElementById("result-found").appendChild(x);
+                            start = middle + 1;
+                        }
+                        if (search < newList[middle]) {
+                            var round = i + 1;
+                            var x = document.createElement("DIV");
+                            var t = document.createTextNode("Round : " + round + " ===> " + search + " != " + list[middle]);
+                            x.appendChild(t);
+                            document.getElementById("result-found").appendChild(x);
+                            end = middle - 1;
+                        }
+                        else {
+                            var round = i + 1;
+                            var x = document.createElement("DIV");
+                            var t = document.createTextNode("Round : " + round + " ===> " + search + " != " + list[middle] + " not found..");
+                            x.appendChild(t);
+                            document.getElementById("result-found").appendChild(x);
+                        }
+                    }
+                }
+                // Bubble Search
+                else if (document.getElementById("format").value == "Bubble Search") {
+                    document.getElementById("head-found").innerHTML = "List : [" + list + "]";
+                    document.getElementById("search-found").innerHTML = "Search : " + search;
+                    document.getElementById("result-found").innerHTML = "";
+                    var check = 1;
+                    for (i = 0; i < list.length; i++) {
+                        var finalNumber = i + 1;
+                        if (list[i] == search) {
+                            var check = 0;
+                            var round = i + 1;
+                            var x = document.createElement("DIV");
+                            var t = document.createTextNode("Round : " + round + " ===> " + search + " = " + list[i] + " found!");
+                            x.appendChild(t);
+                            document.getElementById("result-found").appendChild(x);
+                            check = 0;
+                        } else if (finalNumber == list.length && check == 1) {
+                            if (list[i] == search && check == 1) {
+                                var round = i + 1;
+                                var x = document.createElement("DIV");
+                                var t = document.createTextNode("Round : " + round + " ===> " + search + " = " + list[i] + " found!");
+                                x.appendChild(t);
+                                document.getElementById("result-found").appendChild(x);
+
+                            } else if (list[i] != search && check == 0) {
+                                var round = i + 1;
+                                var x = document.createElement("DIV");
+                                var t = document.createTextNode("Round : " + round + " ===> " + search + " = " + list[i]);
+                                x.appendChild(t);
+                                document.getElementById("result-found").appendChild(x);
+
+                            }
+                            else {
+                                var round = i + 1;
+                                var x = document.createElement("DIV");
+                                var t = document.createTextNode("Round : " + round + " ===> " + search + " != " + list[i] + " not found..");
+                                x.appendChild(t);
+                                document.getElementById("result-found").appendChild(x);
+
+                            }
+                        }
+                        else if (finalNumber == list.length && check == 0) {
+                            var round = i + 1;
+                            var x = document.createElement("DIV");
+                            var t = document.createTextNode("Round : " + round + " ===> " + search + " != " + list[i]);
+                            x.appendChild(t);
+                            document.getElementById("result-found").appendChild(x);
+                        }
+                        else {
+                            var round = i + 1;
+
+                            var x = document.createElement("DIV");
+                            var t = document.createTextNode("Round : " + round + " ===> " + search + " != " + list[i]);
+                            x.appendChild(t);
+                            document.getElementById("result-found").appendChild(x);
+                            if (list[i + 1] != search) {
+                                var temp = list[i];
+                                list[i] = list[round];
+                                list[round] = temp;
+                            }
+                        }
+                    }
+                    var x = document.createElement("DIV");
+                    var t = document.createTextNode("List : [" + list + "]");
+                    x.appendChild(t);
+                    document.getElementById("result-found").appendChild(x);
+                }
+            }
+
+        }
+    }
+</script>
+
+</html>
